@@ -4,10 +4,8 @@
 Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로그인·API Key가 필요 없습니다.
 별도 GUI나 상주 서비스가 없습니다. [English guide](docs/README.en.md)
 
-현재 **0.1.0 개발 버전**입니다. 소스, 설치·제거 스크립트, 네이티브 빌드와 CI가 포함되어 있습니다.
-공개 GitHub Release·WinGet ID·Homebrew Tap은 아직 등록되지 않았습니다.
-현재 버전은 개발 배포용이며, 일반 사용자용 공개 설치 안내는 제공하지 않습니다.
-[검증 기록과 미확인 항목](docs/VALIDATION.md)을 먼저 확인하세요.
+현재 **0.1.0 개발 버전**입니다. Windows x64 설치 프로그램을 CI에서 빌드하고 Windows 설치·제거 검증을 마친 뒤 GitHub Actions 아티팩트로 제공합니다.
+공개 GitHub Release·WinGet ID·Homebrew Tap은 아직 등록되지 않았습니다. [검증 기록과 미확인 항목](docs/VALIDATION.md)을 확인하세요.
 
 ## 주요 기능
 
@@ -19,11 +17,22 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 ## 설치
 
-지원 목표: Windows 10/11 x64, macOS 13+ Intel/Apple Silicon. 현재 로컬에서 빌드·검증한 플랫폼은 macOS arm64입니다. Windows와 Intel은 CI·실기기 검증이 필요합니다.
+지원 목표: Windows 10/11 x64, macOS 13+ Intel/Apple Silicon.
 
-> **처음 사용하는 분께:** 아직 공개 설치 파일이 없습니다. 아래 절차는 GitHub에서 소스를 clone하고, 각 운영체제에서 직접 빌드하는 개발 미리보기 설치입니다. clone만으로 설치되지는 않습니다. 터미널을 열고 아래 단계를 순서대로 실행하세요. 익숙하지 않다면 소스 빌드 대신 공개 설치 파일이 준비될 때까지 기다려 주세요.
+### Windows 설치 파일 다운로드 (Python 불필요)
 
-### 1. 소스 내려받기
+1. [QuickMD 빌드 목록](https://github.com/whitewise95/quickmd-desktop/actions/workflows/build.yml)을 열고 GitHub에 로그인합니다.
+2. 최신 빌드에서 `native (windows-2022, x64)` 작업이 성공했는지 확인합니다. 다른 운영체제 작업이 진행 중이어도 Windows 작업이 성공하면 Windows 아티팩트를 받을 수 있습니다.
+3. 빌드 페이지의 **Artifacts**에서 `QuickMD-windows-2022-x64`를 다운로드하고 ZIP 파일을 풉니다.
+4. 압축을 푼 폴더의 `QuickMD-Setup-Windows-x64.exe`를 더블 클릭해 설치합니다. Python, Git, Inno Setup은 설치할 필요가 없습니다.
+
+Actions 아티팩트는 빌드 임시 파일이며 현재 기본 보관 기간은 90일입니다. **정식 GitHub Release와는 다르며**, 만료 후에는 최신 빌드의 새 아티팩트를 받거나 아래 안내에 따라 직접 빌드해야 합니다.
+
+### 소스에서 직접 설치하기
+
+아래 절차는 설치 파일을 직접 만들거나 macOS에 설치하려는 경우에 사용합니다. GitHub에서 소스를 clone하는 것만으로는 설치되지 않습니다.
+
+#### 1. 소스 내려받기
 
 먼저 Git과 QuickMD 빌드 도구를 설치합니다.
 
@@ -40,7 +49,7 @@ cd QuickMD
 
 **중요:** 이후 명령은 모두 `QuickMD` 저장소 폴더 안에서 실행합니다. 다른 폴더에 있다면 먼저 `cd ~/Documents/QuickMD`를 실행하세요. `build/`와 `dist/`는 빌드할 때 생성되므로 clone 직후에는 아직 없습니다.
 
-### 2. 의존성 설치 및 빌드
+#### 2. 의존성 설치 및 빌드
 
 현재 운영체제와 CPU에서 직접 빌드합니다. 전체 명령은 아래 개발·빌드 절에도 있습니다.
 
@@ -65,7 +74,7 @@ py -3.12 -m venv .venv
 
 빌드가 끝나면 `dist` 폴더가 생깁니다. Windows 빌드는 Windows에서, macOS 빌드는 Mac에서 해야 합니다.
 
-### 3. 설치
+#### 3. 설치
 
 macOS에서는 저장소 폴더에서 다음을 실행합니다.
 
@@ -77,17 +86,17 @@ bash build/dmg/install.sh
 
 Windows에서는 파일 탐색기로 `dist\QuickMD-Setup-Windows-x64.exe`를 찾아 더블 클릭하고 설치 안내를 따릅니다. 관리자 권한 없이 `%LOCALAPPDATA%\Programs\QuickMD`에 설치되며 우클릭 메뉴도 등록합니다. 설치 후 새 PowerShell 창에서 `quickmd doctor`를 실행하세요.
 
-**`Start-Process`에서 파일을 찾을 수 없다고 나오면:** 아직 설치 파일을 만들지 않은 경우가 대부분입니다. Git clone에는 `dist\QuickMD-Setup-Windows-x64.exe`가 들어 있지 않습니다. 위 빌드 절차를 마친 뒤 다음 명령으로 확인하세요.
+**`Start-Process`에서 파일을 찾을 수 없다고 나오면:** 다운로드한 ZIP을 먼저 압축 해제하고, 그 폴더에서 `QuickMD-Setup-Windows-x64.exe`를 실행하세요. `dist\QuickMD-Setup-Windows-x64.exe` 경로는 저장소를 clone한 뒤 직접 빌드했을 때만 생깁니다. Git clone에는 `dist` 설치 파일이 들어 있지 않습니다. 직접 빌드한 경우 다음 명령으로 확인하세요.
 
 ```powershell
 Test-Path .\dist\QuickMD-Setup-Windows-x64.exe
 ```
 
-`True`이면 설치 파일이 생성된 것입니다. `False`이면 위 Windows 빌드 절차가 완료되지 않았거나 실패한 것입니다. 빌드 단계에 표시된 오류를 먼저 해결하세요. **설치된 QuickMD를 실행하는 데는 Python이 필요 없지만, 현재 공개된 사전 빌드 설치 파일이 없어서 소스에서 직접 만들 때는 Python 3.12와 Inno Setup 6이 필요합니다.** 공개 Release 파일이 준비되면 Python 없이 내려받아 설치할 수 있습니다.
+`True`이면 설치 파일이 생성된 것입니다. `False`이면 위 Windows 빌드 절차가 완료되지 않았거나 실패한 것입니다. 빌드 단계에 표시된 오류를 먼저 해결하세요. 설치된 QuickMD와 Actions에서 받은 사전 빌드 설치 파일은 Python 없이 사용할 수 있습니다. **소스에서 직접 빌드할 때만** Python 3.12와 Inno Setup 6이 필요합니다.
 
 ### 공개 배포 상태와 보안 알림
 
-GitHub Releases에 공개된 설치 파일, 공개 설치 스크립트, WinGet/Homebrew 설치 명령은 아직 없습니다. 소스에서 직접 빌드한 개발 패키지는 서명되지 않았으며, 다운로드해 설치할 때 macOS Gatekeeper 또는 Windows 보안 경고가 표시되거나 실행이 차단될 수 있습니다. 운영체제 보호 기능을 우회하지 마세요. 공개 배포 파일이 준비되면 이 절차를 별도로 안내합니다.
+GitHub Releases에 정식 게시된 설치 파일, 공개 설치 스크립트, WinGet/Homebrew 설치 명령은 아직 없습니다. Actions 설치 패키지는 서명되지 않아 Windows SmartScreen 또는 macOS Gatekeeper 경고가 표시될 수 있습니다.
 
 ## 우클릭 사용
 
@@ -176,7 +185,7 @@ python scripts/build.py
 Windows: `py -3.12 -m venv .venv` 후 `.venv\Scripts\python.exe`로 위 `python` 명령을 실행하면 활성화가 필요 없습니다.
 빌드 결과는 현재 플랫폼의 `dist/QuickMD-Setup-Windows-x64.exe` 또는
 `dist/QuickMD-macOS-arm64.dmg` / `dist/QuickMD-macOS-x64.dmg`, `.sha256`, 라이선스 목록입니다.
-태그를 푸시하면 CI가 세 플랫폼을 테스트·패키징하고 SHA256SUMS·빌드 증명이 포함된 개발용 초안 Release를 준비합니다.
+태그를 푸시하면 CI가 세 플랫폼을 테스트·패키징하고 SHA256SUMS·빌드 증명이 포함된 개발용 초안 Release를 준비합니다. 일반 push 빌드에서 Windows 설치 프로그램은 Actions 아티팩트로 받을 수 있습니다.
 
 ```text
 src/quickmd/        CLI, 변환, 안전 저장, 큐, 진단, OS 어댑터
