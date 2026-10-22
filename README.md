@@ -19,51 +19,75 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 ## 설치
 
-지원 목표: Windows 10/11 x64, macOS 13+ Intel/Apple Silicon.
-현재 로컬에서 빌드·검증한 플랫폼은 macOS arm64입니다. Windows와 Intel은 CI·실기기 검증이 필요합니다.
+지원 목표: Windows 10/11 x64, macOS 13+ Intel/Apple Silicon. 현재 로컬에서 빌드·검증한 플랫폼은 macOS arm64입니다. Windows와 Intel은 CI·실기기 검증이 필요합니다.
 
-### macOS: 로컬 빌드 또는 검증한 DMG
+> **처음 사용하는 분께:** 아직 공개 설치 파일이 없습니다. 아래 절차는 GitHub에서 소스를 clone하고, 각 운영체제에서 직접 빌드하는 개발 미리보기 설치입니다. clone만으로 설치되지는 않습니다. 터미널을 열고 아래 단계를 순서대로 실행하세요. 익숙하지 않다면 소스 빌드 대신 공개 설치 파일이 준비될 때까지 기다려 주세요.
 
-직접 빌드한 저장소에서는 다음 한 줄로 설치합니다. 설치에 Python/Homebrew는 필요하지 않습니다.
+### 1. 소스 내려받기
+
+먼저 Git과 QuickMD 빌드 도구를 설치합니다.
+
+- **macOS:** 터미널에서 `xcode-select --install`을 실행해 Apple Command Line Tools를 설치하고 [Python 3.12](https://www.python.org/downloads/macos/)를 설치합니다. 이미 Homebrew가 있다면 `brew install python@3.12`를 사용할 수 있습니다.
+- **Windows:** [Git](https://git-scm.com/download/win), [Python 3.12](https://www.python.org/downloads/windows/)(설치 시 Python Launcher `py` 포함), [Inno Setup 6](https://jrsoftware.org/isdl.php)을 설치합니다. Python과 Git 설치 프로그램은 기본 설치 옵션을 사용하면 됩니다.
+
+그다음 원하는 위치에서 터미널(macOS) 또는 PowerShell(Windows)을 열어 저장소를 clone합니다. 예를 들어 홈 폴더의 Documents에 받으려면:
+
+```bash
+cd ~/Documents
+git clone https://github.com/whitewise95/quickmd-desktop.git QuickMD
+cd QuickMD
+```
+
+**중요:** 이후 명령은 모두 `QuickMD` 저장소 폴더 안에서 실행합니다. 다른 폴더에 있다면 먼저 `cd ~/Documents/QuickMD`를 실행하세요. `build/`와 `dist/`는 빌드할 때 생성되므로 clone 직후에는 아직 없습니다.
+
+### 2. 의존성 설치 및 빌드
+
+현재 운영체제와 CPU에서 직접 빌드합니다. 전체 명령은 아래 개발·빌드 절에도 있습니다.
+
+macOS:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --require-hashes -r requirements-dev.lock
+python -m pip install --no-deps --no-build-isolation -e .
+python scripts/build.py
+```
+
+Windows PowerShell:
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\.venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e .
+.\.venv\Scripts\python.exe scripts\build.py
+```
+
+빌드가 끝나면 `dist` 폴더가 생깁니다. Windows 빌드는 Windows에서, macOS 빌드는 Mac에서 해야 합니다.
+
+### 3. 설치
+
+macOS에서는 저장소 폴더에서 다음을 실행합니다.
 
 ```bash
 bash build/dmg/install.sh
 ```
 
-DMG의 출처와 SHA-256을 확인하고 마운트했다면 다음 명령을 사용합니다.
+이 스크립트는 `build/dmg/QuickMD.app`을 사용자 계정에 설치합니다. 앱 위치는 `~/Library/Application Support/QuickMD/QuickMD.app`, CLI 명령 링크는 `~/.local/bin/quickmd`입니다. 새 터미널을 연 뒤 `quickmd doctor`로 확인하세요.
 
-```bash
-bash /Volumes/QuickMD/install.sh
-```
+Windows에서는 파일 탐색기로 `dist\QuickMD-Setup-Windows-x64.exe`를 찾아 더블 클릭하고 설치 안내를 따릅니다. 관리자 권한 없이 `%LOCALAPPDATA%\Programs\QuickMD`에 설치되며 우클릭 메뉴도 등록합니다. 설치 후 새 PowerShell 창에서 `quickmd doctor`를 실행하세요.
 
-사용자별 설치 경로: `~/Library/Application Support/QuickMD/QuickMD.app`.
-CLI 링크: `~/.local/bin/quickmd`. `~/.zprofile`·`~/.bash_profile`에 표시된 QuickMD PATH 블록을 추가합니다.
-새 터미널에서 `quickmd doctor`를 실행하세요.
-다운로드한 개발 빌드는 Gatekeeper에서 차단될 수 있으며 보안 설정을 우회하지 않습니다.
-
-### Windows: 빌드한 설치 파일
-
-CMD:
-
-```bat
-dist\QuickMD-Setup-Windows-x64.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART
-```
-
-PowerShell:
+**`Start-Process`에서 파일을 찾을 수 없다고 나오면:** 아직 설치 파일을 만들지 않은 경우가 대부분입니다. Git clone에는 `dist\QuickMD-Setup-Windows-x64.exe`가 들어 있지 않습니다. 위 빌드 절차를 마친 뒤 다음 명령으로 확인하세요.
 
 ```powershell
-Start-Process .\dist\QuickMD-Setup-Windows-x64.exe -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART' -Wait
+Test-Path .\dist\QuickMD-Setup-Windows-x64.exe
 ```
 
-`%LOCALAPPDATA%\Programs\QuickMD`에 설치하며 관리자 권한이 필요하지 않습니다.
-사용자 PATH, Start Menu 알림 ID와 지원 확장자의 우클릭 메뉴를 등록합니다.
-새 터미널에서 `quickmd doctor`를 실행하세요. 다운로드한 개발 설치 파일에는 Windows 보안 경고가 나타날 수 있습니다.
+`True`이면 설치 파일이 생성된 것입니다. `False`이면 위 Windows 빌드 절차가 완료되지 않았거나 실패한 것입니다. 빌드 단계에 표시된 오류를 먼저 해결하세요. **설치된 QuickMD를 실행하는 데는 Python이 필요 없지만, 현재 공개된 사전 빌드 설치 파일이 없어서 소스에서 직접 만들 때는 Python 3.12와 Inno Setup 6이 필요합니다.** 공개 Release 파일이 준비되면 Python 없이 내려받아 설치할 수 있습니다.
 
-### 공개 배포 상태
+### 공개 배포 상태와 보안 알림
 
-공개 사용자용 설치 스크립트와 패키지 관리자 설치 명령은 아직 제공하지 않습니다.
-개발용 릴리스 파일은 OS 보안 경고가 나타나거나 설치가 차단될 수 있습니다.
-보안 경고나 운영체제 보호 기능을 우회하지 마세요. WinGet/Homebrew는 등록이 완료된 뒤 안내합니다.
+GitHub Releases에 공개된 설치 파일, 공개 설치 스크립트, WinGet/Homebrew 설치 명령은 아직 없습니다. 소스에서 직접 빌드한 개발 패키지는 서명되지 않았으며, 다운로드해 설치할 때 macOS Gatekeeper 또는 Windows 보안 경고가 표시되거나 실행이 차단될 수 있습니다. 운영체제 보호 기능을 우회하지 마세요. 공개 배포 파일이 준비되면 이 절차를 별도로 안내합니다.
 
 ## 우클릭 사용
 

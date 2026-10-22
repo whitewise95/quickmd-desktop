@@ -52,12 +52,12 @@ def test_concurrent_shell_requests_are_all_drained(documents, tmp_path):
 
 def test_logs_do_not_include_document_content_or_sensitive_paths(documents, tmp_path):
     environment = {**os.environ, "QUICKMD_DATA_DIR": str(tmp_path / "state")}
-    subprocess.run(
+    result = subprocess.run(
         [sys.executable, "-m", "quickmd", "convert", str(documents[0])],
         env=environment,
         capture_output=True,
-        check=True,
     )
+    assert result.returncode == 0, f"stdout={result.stdout!r}\nstderr={result.stderr!r}"
     text = (tmp_path / "state/logs/quickmd.log").read_text()
     assert "QuickMD fixture text" not in text
     assert str(tmp_path) not in text

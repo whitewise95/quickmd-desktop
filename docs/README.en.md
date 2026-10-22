@@ -6,18 +6,69 @@ No account, API key, server, GUI or idle background process. Packaged installati
 **0.1.0 is a development build.** No public release URL, WinGet package or Homebrew tap has been registered.
 The current locally verified platform is macOS arm64. Windows, Intel, minimum OS versions, desktop menu visibility and notification delivery require the [manual matrix](MANUAL_TESTS.md).
 
-## Install built packages
+## Install from source
 
-Windows CMD: `dist\QuickMD-Setup-Windows-x64.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART`.
-PowerShell: `Start-Process .\dist\QuickMD-Setup-Windows-x64.exe -ArgumentList '/VERYSILENT','/NORESTART' -Wait`.
-Per-user install under `%LOCALAPPDATA%\Programs\QuickMD`, no administrator required.
+There is no public installer download yet. These steps are for a development-preview build. Cloning the source does not install QuickMD by itself: you must install the build tools, build it on the target operating system, then run its installer. Open Terminal on macOS or PowerShell on Windows and follow the steps in order.
 
-macOS: `bash build/dmg/install.sh` from your own build, or `bash /Volumes/QuickMD/install.sh` after verifying and mounting a trusted DMG.
-App location: `~/Library/Application Support/QuickMD/QuickMD.app`; CLI: `~/.local/bin/quickmd`.
-The installer adds a marked PATH block to `.zprofile` and `.bash_profile`. Open a new terminal afterwards.
-Downloaded development builds can be blocked; do not disable Gatekeeper.
+### 1. Install the build tools and clone the repository
 
-Public download helpers and package-manager commands are not available yet. Development builds may show OS security warnings or be blocked; do not bypass those protections.
+- **macOS:** Install Apple Command Line Tools with `xcode-select --install`, then install [Python 3.12](https://www.python.org/downloads/macos/). If you already use Homebrew, you can run `brew install python@3.12`.
+- **Windows:** Install [Git](https://git-scm.com/download/win), [Python 3.12](https://www.python.org/downloads/windows/) (include the Python Launcher `py`), and [Inno Setup 6](https://jrsoftware.org/isdl.php).
+
+From the folder where you want the project, clone it and enter the repository directory:
+
+```bash
+cd ~/Documents
+git clone https://github.com/whitewise95/quickmd-desktop.git QuickMD
+cd QuickMD
+```
+
+Run all following commands from this `QuickMD` folder. The `build/` and `dist/` folders are generated during the build and do not exist immediately after cloning.
+
+### 2. Install dependencies and build
+
+Build natively on the operating system and CPU where you plan to install QuickMD.
+
+macOS:
+
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --require-hashes -r requirements-dev.lock
+python -m pip install --no-deps --no-build-isolation -e .
+python scripts/build.py
+```
+
+Windows PowerShell:
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\.venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e .
+.\.venv\Scripts\python.exe scripts\build.py
+```
+
+### 3. Install QuickMD
+
+macOS, from the repository folder:
+
+```bash
+bash build/dmg/install.sh
+```
+
+The app is installed under `~/Library/Application Support/QuickMD/QuickMD.app`; the CLI link is `~/.local/bin/quickmd`. Open a new terminal and run `quickmd doctor`.
+
+Windows: Open File Explorer, go to `QuickMD\dist`, double-click `QuickMD-Setup-Windows-x64.exe`, and follow the installer. It installs per-user under `%LOCALAPPDATA%\Programs\QuickMD` without administrator access. Open a new PowerShell window and run `quickmd doctor`.
+
+**If PowerShell says the file cannot be found:** the installer probably has not been built yet. A Git clone does not contain `dist\QuickMD-Setup-Windows-x64.exe`. Complete the Windows build steps above, then check:
+
+```powershell
+Test-Path .\dist\QuickMD-Setup-Windows-x64.exe
+```
+
+`True` means the installer exists. If it returns `False`, the Windows build steps above did not complete; resolve the error shown during the build first. **Python is not needed to run an installed QuickMD package, but there is no prebuilt public installer yet, so creating one from source requires Python 3.12 and Inno Setup 6.** Once a public Release is available, users can download and install it without Python.
+
+No public GitHub Release, download helper, WinGet package or Homebrew tap is available yet. Development builds are unsigned and may show OS security warnings or be blocked. Do not bypass OS protections. See [validation](VALIDATION.md) for the tested platforms and limitations.
 
 ## Use
 
