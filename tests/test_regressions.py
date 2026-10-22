@@ -51,7 +51,12 @@ def test_concurrent_shell_requests_are_all_drained(documents, tmp_path):
 
 
 def test_logs_do_not_include_document_content_or_sensitive_paths(documents, tmp_path):
-    environment = {**os.environ, "QUICKMD_DATA_DIR": str(tmp_path / "state")}
+    environment = {
+        **os.environ,
+        "QUICKMD_DATA_DIR": str(tmp_path / "state"),
+        # Reproduce Windows consoles with a legacy code page such as cp1252.
+        "PYTHONIOENCODING": "cp1252",
+    }
     result = subprocess.run(
         [sys.executable, "-m", "quickmd", "convert", str(documents[0])],
         env=environment,

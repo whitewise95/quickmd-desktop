@@ -73,6 +73,14 @@ def _uninstall(purge_logs: bool) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            try:
+                reconfigure(encoding="utf-8", errors="backslashreplace")
+            except (OSError, ValueError):
+                pass
+
     parser = argparse.ArgumentParser(prog="quickmd", description="로컬 Markdown 파일 변환")
     parser.add_argument("--version", action="version", version=f"QuickMD {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
