@@ -4,7 +4,7 @@
 Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로그인·API Key가 필요 없습니다.
 별도 GUI나 상주 서비스가 없습니다. [English guide](docs/README.en.md)
 
-현재 **0.1.0 개발 버전**입니다. Windows x64 설치 프로그램을 CI에서 빌드하고 Windows 설치·제거 검증을 마친 뒤 GitHub Actions 아티팩트로 제공합니다.
+현재 **0.1.0 개발 버전**입니다. Windows x64와 macOS Apple Silicon 설치 파일을 CI에서 빌드·검증한 뒤 GitHub Actions 아티팩트로 제공합니다.
 공개 GitHub Release·WinGet ID·Homebrew Tap은 아직 등록되지 않았습니다. [검증 기록과 미확인 항목](docs/VALIDATION.md)을 확인하세요.
 
 ## 주요 기능
@@ -19,14 +19,14 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 지원 목표: Windows 10/11 x64, macOS 13+ Intel/Apple Silicon.
 
-### Windows 설치 파일 다운로드 (Python 불필요)
+### 바로 다운로드 (Python 불필요)
 
-1. [QuickMD 빌드 목록](https://github.com/whitewise95/quickmd-desktop/actions/workflows/build.yml)을 열고 GitHub에 로그인합니다.
-2. 최신 빌드에서 `native (windows-2022, x64)` 작업이 성공했는지 확인합니다. 다른 운영체제 작업이 진행 중이어도 Windows 작업이 성공하면 Windows 아티팩트를 받을 수 있습니다.
-3. 빌드 페이지의 **Artifacts**에서 `QuickMD-windows-2022-x64`를 다운로드하고 ZIP 파일을 풉니다.
-4. 압축을 푼 폴더의 `QuickMD-Setup-Windows-x64.exe`를 더블 클릭해 설치합니다. Python, Git, Inno Setup은 설치할 필요가 없습니다.
+현재 0.1.0 개발 빌드입니다. 링크를 눌러 ZIP을 받고 압축을 푸세요.
 
-Actions 아티팩트는 빌드 임시 파일이며 현재 기본 보관 기간은 90일입니다. **정식 GitHub Release와는 다르며**, 만료 후에는 최신 빌드의 새 아티팩트를 받거나 아래 안내에 따라 직접 빌드해야 합니다.
+- [Windows x64 설치 프로그램 다운로드](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12432999826) — 압축을 푼 뒤 `QuickMD-Setup-Windows-x64.exe`를 실행합니다.
+- [macOS Apple Silicon 설치 이미지 다운로드](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12434940174) — 압축을 푼 뒤 `QuickMD-macOS-arm64.dmg`를 열고 포함된 설치 안내를 따릅니다.
+
+macOS Intel용 파일은 현재 준비 중입니다. GitHub Actions 아티팩트를 받으려면 GitHub 로그인이 필요합니다. 아티팩트는 90일 뒤 만료되므로 이 링크는 새 빌드를 만들 때 갱신합니다. 정식 GitHub Release는 아직 없습니다.
 
 ### 소스에서 직접 설치하기
 
@@ -96,7 +96,7 @@ Test-Path .\dist\QuickMD-Setup-Windows-x64.exe
 
 ### 공개 배포 상태와 보안 알림
 
-GitHub Releases에 정식 게시된 설치 파일, 공개 설치 스크립트, WinGet/Homebrew 설치 명령은 아직 없습니다. Actions 설치 패키지는 서명되지 않아 Windows SmartScreen 또는 macOS Gatekeeper 경고가 표시될 수 있습니다.
+GitHub Releases에 정식 게시된 설치 파일, 공개 설치 스크립트, WinGet/Homebrew 설치 명령은 아직 없습니다. 이 개발 빌드는 공식 배포용 인증서로 서명·공증되지 않아 Windows SmartScreen 또는 macOS Gatekeeper 경고가 표시될 수 있습니다.
 
 ## 우클릭 사용
 
