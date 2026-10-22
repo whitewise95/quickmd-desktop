@@ -26,7 +26,11 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 - [macOS Apple Silicon 설치 이미지 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg) — DMG를 열고 안에 있는 설치 안내를 따릅니다.
 - [모든 버전과 변경 내역 보기](https://github.com/whitewise95/quickmd-desktop/releases)
 
-현재 버전은 [v0.1.0 Release](https://github.com/whitewise95/quickmd-desktop/releases/tag/v0.1.0)입니다. macOS Intel용 패키지는 아직 제공하지 않습니다. 최신 다운로드 링크는 새 공개 버전이 나올 때마다 자동으로 그 버전을 가리킵니다.
+버전 고정 링크도 함께 제공합니다. 새 버전이 나오면 최신 링크는 자동으로 바뀌고, 아래에 이전 버전 링크를 추가합니다.
+
+- **v0.1.0:** [Windows x64](https://github.com/whitewise95/quickmd-desktop/releases/download/v0.1.0/QuickMD-Setup-Windows-x64.exe) · [macOS Apple Silicon](https://github.com/whitewise95/quickmd-desktop/releases/download/v0.1.0/QuickMD-macOS-arm64.dmg) · [변경 내역](https://github.com/whitewise95/quickmd-desktop/releases/tag/v0.1.0)
+
+macOS Intel용 패키지는 아직 제공하지 않습니다.
 
 ### 소스에서 직접 설치하기
 
