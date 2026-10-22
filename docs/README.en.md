@@ -136,5 +136,5 @@ python scripts/build.py
 ```
 
 On Windows use `py -3.12` and `.venv\Scripts\python.exe` without activating the environment.
-CI builds Windows x64, macOS Intel and arm64; Windows packages are available from successful workflow artifacts, and tagged builds prepare a development draft release.
+CI tests Windows x64, macOS Intel and Apple Silicon; tagged builds publish validated Windows and Apple Silicon packages with SHA256SUMS and GitHub build provenance. Intel remains withheld until its build passes.
 See [releasing](RELEASING.md), [validation](VALIDATION.md), and [third-party notices](../THIRD_PARTY_NOTICES.md).
