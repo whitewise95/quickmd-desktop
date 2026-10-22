@@ -146,4 +146,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$RELEASE_TAG" --draft --title "QuickMD $RELEASE_TAG" --notes-file docs/RELEASE_NOTES.md release/*.exe release/*.dmg release/SHA256SUMS
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" --clobber release/*.exe release/*.dmg release/SHA256SUMS
+          else
+            gh release create "$RELEASE_TAG" --draft --title "QuickMD $RELEASE_TAG" --notes-file docs/RELEASE_NOTES.md release/*.exe release/*.dmg release/SHA256SUMS
+          fi
