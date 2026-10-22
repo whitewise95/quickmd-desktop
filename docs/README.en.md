@@ -3,18 +3,19 @@
 Convert local PDF, DOCX, PPTX and XLSX files to Markdown from Windows Explorer or macOS Finder.
 No account, API key, server, GUI or idle background process. Packaged installations include Python.
 
-**0.1.0 is a development build.** Windows x64 and macOS Apple Silicon packages are built and validated by CI, then uploaded as GitHub Actions artifacts. No public GitHub Release, WinGet package or Homebrew tap has been registered. See the [validation record](VALIDATION.md) for current test coverage.
+**0.1.0 is a development preview.** The public GitHub Release includes CI-built and validated packages for Windows x64 and macOS Apple Silicon. WinGet and Homebrew are not registered. See the [validation record](VALIDATION.md) for current test coverage.
 
 ## Install
 
 ### Direct downloads (no Python required)
 
-These links download the current 0.1.0 development build as ZIP files. Extract the downloaded ZIP first.
+Download the latest public release for your operating system. Python and Git are not required to install or run the packaged app.
 
-- [Windows x64 installer](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12432999826) — run `QuickMD-Setup-Windows-x64.exe` from the extracted folder.
-- [macOS Apple Silicon disk image](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12434940174) — open `QuickMD-macOS-arm64.dmg` from the extracted folder and follow the included installation instructions.
+- [Windows x64 installer](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe)
+- [macOS Apple Silicon disk image](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg) — open the DMG and follow the included installation instructions.
+- [All versions and release notes](https://github.com/whitewise95/quickmd-desktop/releases)
 
-A macOS Intel package is not available yet. GitHub requires sign-in to download workflow artifacts. They expire after 90 days, so these links should be updated when new builds are created. There is no public GitHub Release yet.
+The current version is [v0.1.0](https://github.com/whitewise95/quickmd-desktop/releases/tag/v0.1.0). A macOS Intel package is not available yet. The latest-download links will point to the newest public release as it is published.
 
 ### Build from source
 
