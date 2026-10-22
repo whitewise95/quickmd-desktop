@@ -7,8 +7,7 @@ per-user installers/uninstallers, native packages and dependency lock files.
 This is a development preview. Complete `docs/MANUAL_TESTS.md` before describing it as ready for general users.
 Downloaded development packages may trigger OS security warnings or be blocked. Do not bypass OS protections.
 
-Download the artifact for Windows x64, macOS arm64 or macOS Intel. Verify SHA256SUMS,
-GitHub provenance. Follow the README's development installation notes.
+Download the Windows x64 installer or macOS Apple Silicon disk image from the release assets. macOS Intel is not included until its CI build and conversion check pass. Verify SHA256SUMS and GitHub provenance. Follow the README's installation notes.
 For updates rerun the newer installer after conversions finish. Remove with
 `quickmd uninstall` or the documented official OS procedure; converted Markdown is preserved.
 
