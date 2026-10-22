@@ -3,10 +3,10 @@
 QuickMD releases are development previews. The build pipeline does not require extra credentials, but downloaded packages may show OS security warnings or be blocked. Do not describe these packages as ready for general users, and do not bypass OS protections.
 
 1. Keep the real repository and publisher details in the project. Preserve the MIT and third-party notices.
-2. Complete the [manual acceptance matrix](MANUAL_TESTS.md) on every supported target, including clean systems without Python.
+2. Complete the [manual acceptance matrix](MANUAL_TESTS.md) before claiming support for a platform, including clean systems without Python. Current Release assets are Windows x64 and macOS Apple Silicon; macOS Intel remains under CI validation and is withheld until its build passes.
 3. Align `pyproject.toml`, `src/quickmd/__init__.py`, Inno Setup, PyInstaller and notification-helper versions. Update the release notes.
 4. Build natively with `python scripts/build.py`. Inspect `dist/licenses/inventory.json` and the included license texts. Do not include cloud or OCR extras.
-5. Push a matching `vX.Y.Z` tag after checks pass. The workflow tests and builds all three targets, creates SHA256SUMS and GitHub build provenance, and opens a draft Release. The draft is not published automatically.
+5. Push a matching `vX.Y.Z` tag after checks pass. CI tests Windows x64, macOS Apple Silicon and macOS Intel. The release job publishes only the Windows and Apple Silicon artifacts, with SHA256SUMS and GitHub build provenance; the Intel package is withheld until its native build and conversion check pass. CI creates a draft Release; publish it from GitHub Releases after reviewing the assets and notes.
 6. Check the files, checksums, provenance, installation behavior and known limitations. Keep the Release clearly labeled as a development preview.
 7. Prepare package-manager submissions only after their URLs and package identifiers exist. Register each package before advertising its install command.
 
