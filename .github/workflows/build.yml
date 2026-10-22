@@ -116,7 +116,7 @@ jobs:
           fi
 
   release:
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') && always() && needs.native.result != 'cancelled'
     needs: native
     runs-on: ubuntu-24.04
     permissions:
@@ -125,11 +125,17 @@ jobs:
       attestations: write
     steps:
       - uses: actions/checkout@v7.0.1
+      # Windows x64 and macOS Apple Silicon are the current release targets.
+      # Intel remains in CI, but its package is withheld until its build passes.
       - uses: actions/download-artifact@v8.0.2
         with:
+          name: QuickMD-windows-2022-x64
           path: release
-          merge-multiple: true
-      - run: cd release && sha256sum *.exe *.dmg > SHA256SUMS
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: QuickMD-macos-15-arm64
+          path: release
+      - run: cd release && rm -f SHA256SUMS *.sha256 && sha256sum *.exe *.dmg > SHA256SUMS
       - uses: actions/attest-build-provenance@v4.2.2
         with:
           subject-path: |
