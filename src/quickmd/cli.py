@@ -125,10 +125,13 @@ def main(argv: list[str] | None = None) -> int:
                 raise OSError("메뉴 등록 검증 실패")
             print("메뉴 등록 완료. Explorer/Finder에서 표시 여부를 확인하세요.")
         return 0
-    except (OSError, ValueError, subprocess.SubprocessError):
+    except (OSError, ValueError, subprocess.SubprocessError) as exc:
         # Never expose arbitrary third-party exception text (paths/content).
+        diagnostic = type(exc).__name__
+        if isinstance(exc, OSError) and exc.errno is not None:
+            diagnostic += f" errno={exc.errno}"
         print(
-            "QuickMD 작업 실패: 설치 경로, 권한, 저장 공간을 확인한 뒤 repair를 실행하세요.",
+            f"QuickMD 작업 실패 [{diagnostic}]: 설치 경로, 권한, 저장 공간을 확인한 뒤 repair를 실행하세요.",
             file=sys.stderr,
         )
         return 1
