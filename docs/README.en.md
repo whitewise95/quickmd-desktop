@@ -3,18 +3,18 @@
 Convert local PDF, DOCX, PPTX and XLSX files to Markdown from Windows Explorer or macOS Finder.
 No account, API key, server, GUI or idle background process. Packaged installations include Python.
 
-**0.1.0 is a development build.** The Windows x64 installer is built by CI and uploaded as a GitHub Actions artifact after Windows installation and uninstall checks pass. No public GitHub Release, WinGet package or Homebrew tap has been registered. See the [validation record](VALIDATION.md) for current test coverage.
+**0.1.0 is a development build.** Windows x64 and macOS Apple Silicon packages are built and validated by CI, then uploaded as GitHub Actions artifacts. No public GitHub Release, WinGet package or Homebrew tap has been registered. See the [validation record](VALIDATION.md) for current test coverage.
 
 ## Install
 
-### Download the Windows installer (no Python required)
+### Direct downloads (no Python required)
 
-1. Open the [QuickMD build list](https://github.com/whitewise95/quickmd-desktop/actions/workflows/build.yml) and sign in to GitHub.
-2. In the latest run, confirm that `native (windows-2022, x64)` succeeded. The Windows artifact is available as soon as that job succeeds, even if other platform jobs are still running.
-3. Under **Artifacts**, download `QuickMD-windows-2022-x64` and extract the ZIP file.
-4. Double-click `QuickMD-Setup-Windows-x64.exe` in the extracted folder and follow the installer. Python, Git and Inno Setup are not needed to install it.
+These links download the current 0.1.0 development build as ZIP files. Extract the downloaded ZIP first.
 
-Actions artifacts are temporary build files and currently use GitHub's default 90-day retention. They are not a public GitHub Release. After an artifact expires, download a newer build or follow the source-build steps below.
+- [Windows x64 installer](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12432999826) — run `QuickMD-Setup-Windows-x64.exe` from the extracted folder.
+- [macOS Apple Silicon disk image](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12434940174) — open `QuickMD-macOS-arm64.dmg` from the extracted folder and follow the included installation instructions.
+
+A macOS Intel package is not available yet. GitHub requires sign-in to download workflow artifacts. They expire after 90 days, so these links should be updated when new builds are created. There is no public GitHub Release yet.
 
 ### Build from source
 
@@ -78,7 +78,7 @@ Test-Path .\dist\QuickMD-Setup-Windows-x64.exe
 
 `True` means the installer exists. If it returns `False`, the Windows build steps above did not complete; resolve the error shown during the build first. Python is not needed to run QuickMD or install the prebuilt Actions package. **Only building from source requires Python 3.12 and Inno Setup 6.**
 
-No public GitHub Release, download helper, WinGet package or Homebrew tap is available yet. Actions development packages are unsigned and may show Windows SmartScreen or macOS Gatekeeper warnings. See [validation](VALIDATION.md) for the tested platforms and limitations.
+No public GitHub Release, download helper, WinGet package or Homebrew tap is available yet. These development builds are not signed and notarized with official distribution certificates, so Windows SmartScreen or macOS Gatekeeper warnings may appear. See [validation](VALIDATION.md) for the tested platforms and limitations.
 
 ## Use
 
