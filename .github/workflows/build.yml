@@ -1,0 +1,143 @@
+name: Test and native packages
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            arch: x64
+          - os: macos-15-intel
+            arch: x64
+          - os: macos-15
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    env:
+      QUICKMD_DATA_DIR: ${{ github.workspace }}/build/ci-state
+      MACOSX_DEPLOYMENT_TARGET: '13.0'
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+          architecture: ${{ matrix.arch }}
+          cache: pip
+          cache-dependency-path: requirements-dev.lock
+      - run: python -m pip install --require-hashes -r requirements-dev.lock
+      - run: python -m pip install --no-deps --no-build-isolation -e .
+      - name: Check release version
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python -c "import os,quickmd; assert os.environ['RELEASE_TAG'] == 'v' + quickmd.__version__"
+      - run: python -m ruff check src tests scripts
+      - run: python -m ruff format --check src tests scripts
+      - run: python -m mypy src/quickmd
+      - run: python -m pytest -q
+      - name: Shell syntax
+        if: runner.os == 'macOS'
+        run: bash -n scripts/install-macos.sh scripts/apple-signing.sh packaging/macos/install.sh packaging/macos/uninstall.sh packaging/macos/lifecycle.sh
+      - name: PowerShell syntax
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("$PWD/scripts/install-windows.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors.Count) { throw ($errors | Out-String) }
+      - name: Import Apple signing identity (optional)
+        if: runner.os == 'macOS' && startsWith(github.ref, 'refs/tags/')
+        env:
+          APPLE_CERT_P12_BASE64: ${{ secrets.APPLE_CERT_P12_BASE64 }}
+          APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          APPLE_SIGN_IDENTITY: ${{ secrets.APPLE_SIGN_IDENTITY }}
+        run: bash scripts/apple-signing.sh
+      - name: Import Windows signing identity (optional)
+        if: runner.os == 'Windows' && startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          WINDOWS_CERT_PFX_BASE64: ${{ secrets.WINDOWS_CERT_PFX_BASE64 }}
+          WINDOWS_CERT_PASSWORD: ${{ secrets.WINDOWS_CERT_PASSWORD }}
+        run: ./scripts/windows-signing.ps1
+      - name: Native build
+        run: python scripts/build.py
+      - name: Windows installation lifecycle (isolated runner)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $setup = Resolve-Path dist/QuickMD-Setup-Windows-x64.exe
+          $p = Start-Process $setup -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART' -PassThru -Wait
+          if ($p.ExitCode) { throw 'Install failed' }
+          & "$env:LOCALAPPDATA/Programs/QuickMD/quickmd.exe" doctor
+          if ($LASTEXITCODE) { throw 'Doctor failed' }
+          if ($env:WINDOWS_CERT_THUMBPRINT) {
+            foreach ($name in 'quickmd.exe','quickmd-shell.exe','unins000.exe') {
+              $file = Join-Path "$env:LOCALAPPDATA/Programs/QuickMD" $name
+              if ((Get-AuthenticodeSignature $file).Status -ne 'Valid') { throw "Signature failed: $name" }
+            }
+          }
+          $p = Start-Process $setup -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART' -PassThru -Wait
+          if ($p.ExitCode) { throw 'Reinstall failed' }
+          $p = Start-Process "$env:LOCALAPPDATA/Programs/QuickMD/unins000.exe" -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES' -PassThru -Wait
+          if ($p.ExitCode) { throw 'Uninstall failed' }
+      - name: macOS installation lifecycle (isolated runner)
+        if: runner.os == 'macOS'
+        run: |
+          bash build/dmg/install.sh
+          "$HOME/.local/bin/quickmd" doctor
+          bash build/dmg/install.sh
+          bash "$HOME/Library/Application Support/QuickMD/uninstall.sh"
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: QuickMD-${{ matrix.os }}-${{ matrix.arch }}
+          if-no-files-found: error
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.sha256
+            dist/SHA256SUMS
+            dist/licenses/**
+      - name: Remove temporary Apple keychain
+        if: always() && runner.os == 'macOS'
+        run: |
+          if [ -f "$RUNNER_TEMP/quickmd.keychain-db" ]; then
+            security delete-keychain "$RUNNER_TEMP/quickmd.keychain-db"
+          fi
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: native
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          path: release
+          merge-multiple: true
+      - run: cd release && sha256sum *.exe *.dmg > SHA256SUMS
+      - uses: actions/attest-build-provenance@v4.2.2
+        with:
+          subject-path: |
+            release/*.exe
+            release/*.dmg
+      - name: Prepare draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" --draft --title "QuickMD $RELEASE_TAG" --notes-file docs/RELEASE_NOTES.md release/*.exe release/*.dmg release/SHA256SUMS
