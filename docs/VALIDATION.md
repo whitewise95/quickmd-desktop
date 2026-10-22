@@ -6,7 +6,7 @@ This is a development implementation, not a verified public release.
 
 - Host: macOS arm64. `sw_vers` reports 26.6.2; some Python runtime/diagnostic APIs report Darwin 25.6.0. Record the actual target's OS build again during acceptance testing.
 - Python 3.12.10, MarkItDown 0.1.9, PyInstaller 6.22.3.
-- Initially empty repository, no GitHub remote, signing identity, notarization credentials or package-manager registration supplied.
+- Initially empty repository with no package-manager registration.
 - Changes are local. No GitHub Actions run, public Release, package registration or live user-profile installation was performed.
 
 ## Observed checks
@@ -23,9 +23,9 @@ This is a development implementation, not a verified public release.
 | Privacy | Logs contain conversion status, not fixture contents, full source paths or file names. |
 | macOS lifecycle helpers | Complete block removal; malformed/edited PATH block preservation; removal with missing app executable; file snapshot/restore; unrelated Markdown/log preservation. |
 | Generated Quick Action | Executed with native `automator` against a Korean/space-named PDF in the workspace. Markdown was created with expected text. No live Finder service registration used. |
-| Notifications | Native Swift helper compiled and ad-hoc signed; `--status` returned `not-determined`. Permission prompt/display delivery not tested. |
+| Notifications | Native Swift helper compiled; `--status` returned `not-determined`. Permission prompt/display delivery not tested. |
 | Frozen app | Native arm64 PyInstaller app built. `doctor --no-integration` passed actual PDF conversion. All four formats converted using bundled executable, without source PYTHONPATH. |
-| DMG | Development arm64 DMG generated with hdiutil. Ad-hoc signing verifies; no Developer ID/notarization. Integrity files in `dist/`. |
+| DMG | Development arm64 DMG generated with hdiutil. Integrity files in `dist/`. |
 | Static checks | Ruff lint/format clean; strict mypy passes for host and `--platform win32`; Python compileall and Bash syntax checks pass. |
 | Workflow | YAML parsed successfully. Current official Action releases checked; retiring macos-14 runner replaced with macos-15. Workflow execution remains unverified. |
 | Dependencies | Universal uv lock includes conditional Windows dependencies. `pip install --require-hashes -r requirements-dev.lock --dry-run` resolved successfully on host. |
@@ -39,7 +39,7 @@ An independent agent reviewed conversion, publication, argument forwarding and i
 2. Official removal can clean owned registration/links even when the app executable is missing.
 3. Installation snapshots app/profile/uninstaller/ownership files and restores them on late failure.
 
-A focused CI review also identified macos-14 deprecation and unsigned Inno uninstaller/self-copies; the workflow now uses macos-15 arm64/macOS Intel and configures conditional Inno signing, with native CI signature checks. Certificate-backed signing remains unverified here.
+A focused CI review identified the macos-14 deprecation; the workflow now uses macos-15 arm64/macOS Intel. Native Windows packaging verification remains pending.
 No deferred style-only findings were reported. This review is code evidence, not a substitute for native Windows or clean-account acceptance.
 
 ## Artifacts
@@ -54,7 +54,7 @@ Windows x64 EXE and macOS Intel DMG were **not built on this host**. Their nativ
 
 ## Required before public release
 
-Complete [MANUAL_TESTS.md](MANUAL_TESTS.md): Windows 10/11 Explorer selection behavior and actual counts, Intel/macOS 13 compatibility, Finder menu visibility, permission/notification behavior, install/update/uninstall on clean accounts without Python, signed download/Gatekeeper and Authenticode.
+Complete [MANUAL_TESTS.md](MANUAL_TESTS.md): Windows 10/11 Explorer selection behavior and actual counts, Intel/macOS 13 compatibility, Finder menu visibility, permission/notification behavior, install/update/uninstall on clean accounts without Python, and downloaded package behavior under default OS protections.
 
 PowerShell/Inno compiler execution was not available locally. Those checks are configured on Windows CI but have not run remotely.
 The current account's Finder menus, PATH and installed applications were left untouched. The supplied scripts can perform the installation when explicitly run.

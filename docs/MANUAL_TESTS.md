@@ -1,6 +1,6 @@
 # Desktop release acceptance matrix
 
-Do not check an item merely because unit tests pass. Record OS version/build, CPU, package hash, signing status, date, tester, logs and result screenshots. Use a fresh account without Python or developer tools. **All rows below are pending unless an attached report says otherwise.**
+Do not check an item merely because unit tests pass. Record OS version/build, CPU, package hash, date, tester, logs and result screenshots. Use a fresh account without Python or developer tools. **All rows below are pending unless an attached report says otherwise.**
 
 | Target | Required systems |
 |---|---|
@@ -9,8 +9,8 @@ Do not check an item merely because unit tests pass. Record OS version/build, CP
 
 ## Install/update/remove
 
-- [ ] Install the correctly signed downloaded package using documented commands; no Python or admin prompt.
-- [ ] Wrong OS/CPU, changed SHA-256 and invalid signature reject before installation.
+- [ ] Install the downloaded development package on a clean system; no Python or admin prompt.
+- [ ] Wrong OS/CPU and changed SHA-256 reject before installation.
 - [ ] `quickmd doctor` works from a new terminal, engine test passes, registered command matches the installation.
 - [ ] Reinstall twice; one menu, one PATH entry and one notification identity.
 - [ ] Update from prior version; existing Markdown, other PATH entries and logs remain.
@@ -38,7 +38,6 @@ Do not check an item merely because unit tests pass. Record OS version/build, CP
 - [ ] Empty/scanned, encrypted, corrupt, oversized and highly compressed input; failure messages and continued batch processing.
 - [ ] Notification permission not requested/allowed/denied, Focus/Do Not Disturb and notifications disabled. Conversion still succeeds.
 - [ ] Single-file result and partial-failure summaries, no notification flood for one batched selection.
-- [ ] Signed downloaded DMG passes Gatekeeper on a clean Mac; no quarantine removal/security disabling.
-- [ ] Authenticode installer/app signatures validate on clean Windows; record SmartScreen reputation separately.
+- [ ] Record Gatekeeper and SmartScreen behavior for downloaded development packages on clean systems; do not disable OS protections.
 
 Current automation executes source/frozen conversions, generated workflow execution, file races and installer helper operations. It does not substitute for these desktop observations.

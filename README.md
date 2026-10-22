@@ -6,7 +6,7 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 현재 **0.1.0 개발 버전**입니다. 소스, 설치·제거 스크립트, 네이티브 빌드와 CI가 포함되어 있습니다.
 공개 GitHub Release·WinGet ID·Homebrew Tap은 아직 등록되지 않았습니다.
-일반 사용자용 공개 한 줄 설치는 서명·공증·OS 실검증 후 제공해야 합니다.
+현재 버전은 개발 배포용이며, 일반 사용자용 공개 설치 안내는 제공하지 않습니다.
 [검증 기록과 미확인 항목](docs/VALIDATION.md)을 먼저 확인하세요.
 
 ## 주요 기능
@@ -30,7 +30,7 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 bash build/dmg/install.sh
 ```
 
-DMG의 출처·해시·서명을 확인하고 마운트했다면 다음 명령을 사용합니다.
+DMG의 출처와 SHA-256을 확인하고 마운트했다면 다음 명령을 사용합니다.
 
 ```bash
 bash /Volumes/QuickMD/install.sh
@@ -39,7 +39,7 @@ bash /Volumes/QuickMD/install.sh
 사용자별 설치 경로: `~/Library/Application Support/QuickMD/QuickMD.app`.
 CLI 링크: `~/.local/bin/quickmd`. `~/.zprofile`·`~/.bash_profile`에 표시된 QuickMD PATH 블록을 추가합니다.
 새 터미널에서 `quickmd doctor`를 실행하세요.
-다운로드한 미공증 개발 빌드는 Gatekeeper에서 차단될 수 있으며 보안 설정을 우회하지 않습니다.
+다운로드한 개발 빌드는 Gatekeeper에서 차단될 수 있으며 보안 설정을 우회하지 않습니다.
 
 ### Windows: 빌드한 설치 파일
 
@@ -57,29 +57,13 @@ Start-Process .\dist\QuickMD-Setup-Windows-x64.exe -ArgumentList '/VERYSILENT','
 
 `%LOCALAPPDATA%\Programs\QuickMD`에 설치하며 관리자 권한이 필요하지 않습니다.
 사용자 PATH, Start Menu 알림 ID와 지원 확장자의 우클릭 메뉴를 등록합니다.
-새 터미널에서 `quickmd doctor`를 실행하세요. 서명 없는 개발 설치 파일에는 보안 경고가 나타날 수 있습니다.
+새 터미널에서 `quickmd doctor`를 실행하세요. 다운로드한 개발 설치 파일에는 Windows 보안 경고가 나타날 수 있습니다.
 
-### 공개 배포 준비용 다운로드 스크립트
+### 공개 배포 상태
 
-다음은 **실제 저장소·릴리스·신뢰하는 SHA-256을 넣어야 작동하는 템플릿**입니다.
-스크립트를 먼저 내려받아 검토한 뒤 실행하세요. 원격 스크립트를 즉시 실행하는 파이프 명령은 사용하지 않습니다.
-
-```text
-# macOS
-bash scripts/install-macos.sh OWNER/REPO v0.1.0 TRUSTED_SHA256
-
-# PowerShell
-.\scripts\install-windows.ps1 -Repository OWNER/REPO -Version v0.1.0 -Sha256 TRUSTED_SHA256
-
-# CMD
-powershell -NoProfile -File scripts\install-windows.ps1 -Repository OWNER/REPO -Version v0.1.0 -Sha256 TRUSTED_SHA256
-```
-
-`OWNER/REPO`와 `TRUSTED_SHA256`은 실제 값이 아닙니다. 공개 설치 스크립트는 GitHub Releases HTTPS 다운로드,
-필수 해시, Windows 서명 또는 macOS Gatekeeper 평가를 확인합니다.
-같은 비신뢰 다운로드 위치에서 받은 체크섬만으로 배포자의 신원을 보증하지 않습니다.
-실행 정책 우회 옵션도 사용하지 않습니다. 정책이 스크립트를 막으면 검증한 설치 실행 파일을 사용하세요.
-WinGet/Homebrew는 [등록 절차](docs/RELEASING.md)를 완료한 뒤에만 설치 명령을 공개합니다.
+공개 사용자용 설치 스크립트와 패키지 관리자 설치 명령은 아직 제공하지 않습니다.
+개발용 릴리스 파일은 OS 보안 경고가 나타나거나 설치가 차단될 수 있습니다.
+보안 경고나 운영체제 보호 기능을 우회하지 마세요. WinGet/Homebrew는 등록이 완료된 뒤 안내합니다.
 
 ## 우클릭 사용
 
@@ -168,13 +152,13 @@ python scripts/build.py
 Windows: `py -3.12 -m venv .venv` 후 `.venv\Scripts\python.exe`로 위 `python` 명령을 실행하면 활성화가 필요 없습니다.
 빌드 결과는 현재 플랫폼의 `dist/QuickMD-Setup-Windows-x64.exe` 또는
 `dist/QuickMD-macOS-arm64.dmg` / `dist/QuickMD-macOS-x64.dmg`, `.sha256`, 라이선스 목록입니다.
-서명 정보가 없으면 개발용 산출물을 만듭니다. CI는 세 플랫폼 테스트·패키징, 태그의 SHA256SUMS·빌드 증명·초안 Release를 구성합니다.
+태그를 푸시하면 CI가 세 플랫폼을 테스트·패키징하고 SHA256SUMS·빌드 증명이 포함된 개발용 초안 Release를 준비합니다.
 
 ```text
 src/quickmd/        CLI, 변환, 안전 저장, 큐, 진단, OS 어댑터
 tests/             실제 문서·경로·충돌·배치·프로세스·제거 테스트
 packaging/         PyInstaller, Inno Setup, macOS Swift/설치 스크립트
-scripts/           빌드, 다운로드 검증, 서명, 라이선스, 패키지 등록 준비
+scripts/           빌드, 다운로드 검증, 라이선스, 패키지 등록 준비
 .github/workflows/ OS별 테스트·패키징·초안 Release
 docs/              원본 요구사항, 설계, 배포·실기기 검증
 ```

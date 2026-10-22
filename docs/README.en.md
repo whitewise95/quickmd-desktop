@@ -15,11 +15,9 @@ Per-user install under `%LOCALAPPDATA%\Programs\QuickMD`, no administrator requi
 macOS: `bash build/dmg/install.sh` from your own build, or `bash /Volumes/QuickMD/install.sh` after verifying and mounting a trusted DMG.
 App location: `~/Library/Application Support/QuickMD/QuickMD.app`; CLI: `~/.local/bin/quickmd`.
 The installer adds a marked PATH block to `.zprofile` and `.bash_profile`. Open a new terminal afterwards.
-Downloaded unsigned/unnotarized builds can be blocked; do not disable Gatekeeper.
+Downloaded development builds can be blocked; do not disable Gatekeeper.
 
-Download helpers in `scripts/` require the actual GitHub repository, a pinned version and a trusted SHA-256.
-Review the scripts first. They verify hashes and OS signatures; no pipe-to-shell or execution-policy bypass is used.
-Package-manager commands will be published only after registration.
+Public download helpers and package-manager commands are not available yet. Development builds may show OS security warnings or be blocked; do not bypass those protections.
 
 ## Use
 
@@ -76,5 +74,5 @@ python scripts/build.py
 ```
 
 On Windows use `py -3.12` and `.venv\Scripts\python.exe` without activating the environment.
-CI builds Windows x64, macOS Intel and arm64; tagged builds prepare a draft release. Signing is optional for development, required for public distribution.
+CI builds Windows x64, macOS Intel and arm64; tagged builds prepare a development draft release. Public installation is not supported yet.
 See [releasing](RELEASING.md), [validation](VALIDATION.md), and [third-party notices](../THIRD_PARTY_NOTICES.md).

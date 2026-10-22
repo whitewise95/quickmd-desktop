@@ -10,8 +10,8 @@ CLI and OS handlers share batch conversion. A user-scoped advisory file lock ser
 
 Windows per-user Inno installer owns binaries, PATH and Start Menu AUMID. Python owns supported-extension registry verbs. macOS installer owns a versioned user-directory application, symlink in ~/.local/bin, Quick Action and a native notification helper. Uninstall launches an external script/official uninstaller after the process exits.
 
-Notifications are best effort: Windows ToastNotificationManager with an installed AUMID shortcut; macOS UserNotifications helper inside a signed app bundle. Doctor distinguishes unavailable, disabled, unconfirmed and functional states.
+Notifications are best effort: Windows ToastNotificationManager with an installed AUMID shortcut; macOS UserNotifications helper inside the app bundle. Doctor distinguishes unavailable, disabled, unconfirmed and functional states.
 
-CI builds on each target OS/CPU. Unsigned development builds are explicitly labeled. Only configured signing identities enable public-release verification; no security bypass. No invented repository URL, package ID or package-manager availability.
+CI builds on each target OS/CPU. Releases are development previews; no security bypass. No invented repository URL, package ID or package-manager availability.
 
 Verification: real four-format fixtures, encrypted/broken/empty PDFs, malformed inputs, parallel output publication, timeouts, duplicates, mixed failures, paths and generated integration payloads. Automator execution and native packaging on this host where permitted. Explorer, Finder visibility, notifications and Gatekeeper require a recorded manual matrix.

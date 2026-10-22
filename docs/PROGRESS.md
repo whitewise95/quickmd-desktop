@@ -8,7 +8,6 @@
 - Task 3: complete for available host — PyInstaller app, Swift helper, arm64 DMG, dependency locks, license inventory and CI/scripts for native Windows/Intel builds. No remote CI or unavailable native builds claimed.
 - Task 4: complete — Korean/English documentation, release registration procedure, exact validation evidence and manual acceptance matrix.
 - Independent review: fixed malformed PATH deletion, broken-app removal and late-install rollback. Added regression coverage. Focused CI review updated retiring macOS runner.
-- Focused release review: conditional Inno SignTool/SignedUninstaller added so certificate-backed builds also sign uninstallers and temporary setup copies; native verification configured in CI, not executed on this host.
 - Additional regression: reject symlinked workflow Contents; observed failing test before fix, passing afterwards.
 - Verification: 36 passed / 1 Windows-only skipped; Ruff and strict mypy (macOS + Windows target) clean. Frozen app converted PDF/DOCX/PPTX/XLSX; original/source safety tested.
 - Ruling: use legacy Explorer Player verbs with request queue and document a 100-item cap; primary Windows 11 COM integration deferred per supplied MVP allowance. Cost: Show more options and mandatory real Explorer selection validation before release.

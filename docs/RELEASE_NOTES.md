@@ -4,12 +4,11 @@ Local PDF, DOCX, PPTX and XLSX conversion; safe numbered output; sequential batc
 Explorer classic context menu and Finder Quick Action; notifications, doctor and repair;
 per-user installers/uninstallers, native packages and dependency lock files.
 
-**Release operator:** replace this development notice only after completing
-`docs/MANUAL_TESTS.md`. Confirm the tag matches the packaged version and record signing/notarization status for each artifact.
-Unsigned or unnotarized artifacts are for development, not verified public installation.
+This is a development preview. Complete `docs/MANUAL_TESTS.md` before describing it as ready for general users.
+Downloaded development packages may trigger OS security warnings or be blocked. Do not bypass OS protections.
 
 Download the artifact for Windows x64, macOS arm64 or macOS Intel. Verify SHA256SUMS,
-GitHub provenance and OS signatures. Follow the README's installer commands.
+GitHub provenance. Follow the README's development installation notes.
 For updates rerun the newer installer after conversions finish. Remove with
 `quickmd uninstall` or the documented official OS procedure; converted Markdown is preserved.
 
