@@ -4,8 +4,7 @@
 Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로그인·API Key가 필요 없습니다.
 별도 GUI나 상주 서비스가 없습니다. [English guide](docs/README.en.md)
 
-현재 **0.1.0 개발 버전**입니다. Windows x64와 macOS Apple Silicon 설치 파일을 CI에서 빌드·검증한 뒤 GitHub Actions 아티팩트로 제공합니다.
-공개 GitHub Release·WinGet ID·Homebrew Tap은 아직 등록되지 않았습니다. [검증 기록과 미확인 항목](docs/VALIDATION.md)을 확인하세요.
+현재 **0.1.0 개발 미리보기**를 공개 Release로 제공합니다. Windows x64와 macOS Apple Silicon 설치 파일을 CI에서 빌드·검증했습니다. [검증 기록과 미확인 항목](docs/VALIDATION.md)을 확인하세요.
 
 ## 주요 기능
 
@@ -21,12 +20,13 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 ### 바로 다운로드 (Python 불필요)
 
-현재 0.1.0 개발 빌드입니다. 링크를 눌러 ZIP을 받고 압축을 푸세요.
+최신 공개 Release에서 운영체제에 맞는 파일을 받으세요. 설치 파일을 실행하는 데 Python이나 Git은 필요하지 않습니다.
 
-- [Windows x64 설치 프로그램 다운로드](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12432999826) — 압축을 푼 뒤 `QuickMD-Setup-Windows-x64.exe`를 실행합니다.
-- [macOS Apple Silicon 설치 이미지 다운로드](https://github.com/whitewise95/quickmd-desktop/actions/runs/39797307725/artifacts/12434940174) — 압축을 푼 뒤 `QuickMD-macOS-arm64.dmg`를 열고 포함된 설치 안내를 따릅니다.
+- [Windows x64 설치 프로그램 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe)
+- [macOS Apple Silicon 설치 이미지 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg) — DMG를 열고 안에 있는 설치 안내를 따릅니다.
+- [모든 버전과 변경 내역 보기](https://github.com/whitewise95/quickmd-desktop/releases)
 
-macOS Intel용 파일은 현재 준비 중입니다. GitHub Actions 아티팩트를 받으려면 GitHub 로그인이 필요합니다. 아티팩트는 90일 뒤 만료되므로 이 링크는 새 빌드를 만들 때 갱신합니다. 정식 GitHub Release는 아직 없습니다.
+현재 버전은 [v0.1.0 Release](https://github.com/whitewise95/quickmd-desktop/releases/tag/v0.1.0)입니다. macOS Intel용 패키지는 아직 제공하지 않습니다. 최신 다운로드 링크는 새 공개 버전이 나올 때마다 자동으로 그 버전을 가리킵니다.
 
 ### 소스에서 직접 설치하기
 
