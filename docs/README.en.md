@@ -15,7 +15,11 @@ Download the latest public release for your operating system. Python and Git are
 - [macOS Apple Silicon disk image](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg) — open the DMG and follow the included installation instructions.
 - [All versions and release notes](https://github.com/whitewise95/quickmd-desktop/releases)
 
-The current version is [v0.1.0](https://github.com/whitewise95/quickmd-desktop/releases/tag/v0.1.0). A macOS Intel package is not available yet. The latest-download links will point to the newest public release as it is published.
+Version-pinned links are listed alongside the latest downloads. Add each new version below when it is published; latest links will automatically follow the newest public release.
+
+- **v0.1.0:** [Windows x64](https://github.com/whitewise95/quickmd-desktop/releases/download/v0.1.0/QuickMD-Setup-Windows-x64.exe) · [macOS Apple Silicon](https://github.com/whitewise95/quickmd-desktop/releases/download/v0.1.0/QuickMD-macOS-arm64.dmg) · [release notes](https://github.com/whitewise95/quickmd-desktop/releases/tag/v0.1.0)
+
+A macOS Intel package is not available yet.
 
 ### Build from source
 
