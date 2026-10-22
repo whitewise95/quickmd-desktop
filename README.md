@@ -185,7 +185,7 @@ python scripts/build.py
 Windows: `py -3.12 -m venv .venv` 후 `.venv\Scripts\python.exe`로 위 `python` 명령을 실행하면 활성화가 필요 없습니다.
 빌드 결과는 현재 플랫폼의 `dist/QuickMD-Setup-Windows-x64.exe` 또는
 `dist/QuickMD-macOS-arm64.dmg` / `dist/QuickMD-macOS-x64.dmg`, `.sha256`, 라이선스 목록입니다.
-태그를 푸시하면 CI가 세 플랫폼을 테스트·패키징하고 SHA256SUMS·빌드 증명이 포함된 개발용 초안 Release를 준비합니다. 일반 push 빌드에서 Windows 설치 프로그램은 Actions 아티팩트로 받을 수 있습니다.
+태그를 푸시하면 CI가 세 플랫폼을 검사하고 SHA256SUMS·빌드 증명과 함께 검증된 Windows x64·macOS Apple Silicon 패키지를 Release에 게시합니다. macOS Intel 패키지는 해당 빌드가 통과하기 전까지 공개하지 않습니다.
 
 ```text
 src/quickmd/        CLI, 변환, 안전 저장, 큐, 진단, OS 어댑터
