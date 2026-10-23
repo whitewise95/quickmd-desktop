@@ -16,32 +16,15 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 ## 설치
 
-지원 목표: Windows 10/11 x64, macOS 13+ Intel/Apple Silicon.
-
 ### Windows 10/11 (x64)
 
-[Windows 설치 파일 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe) 후 더블클릭하고 설치 안내를 따릅니다. Python이나 Git은 필요하지 않습니다.
+[설치 파일 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe) 후 더블클릭하고 설치 안내를 따르세요. Python이나 Git은 필요하지 않습니다. SmartScreen 경고가 뜨면 실행을 강제로 허용하지 마세요. 직접 빌드하려면 아래 Windows 소스 설치 절차를 따르세요. 로컬 빌드도 보안 설정에 따라 차단될 수 있습니다.
 
-SmartScreen에서 실행을 막으면 경고를 우회하지 마세요. 직접 소스를 검토하고 빌드하려면 아래의 [소스에서 직접 설치하기](#소스에서-직접-설치하기)를 참고하세요. 직접 빌드하면 다운로드 파일 경고를 피할 수 있는 경우가 있지만, Smart App Control 등 Windows 보안 기능이 서명되지 않은 프로그램을 차단할 수 있어 경고가 사라진다고 보장할 수 없습니다.
+### macOS 및 Windows 소스 설치
 
-### macOS (Apple Silicon)
+Git과 Python 3.12가 필요합니다. Mac에서는 Apple Command Line Tools, Windows에서는 [Inno Setup 6](https://jrsoftware.org/isdl.php)도 설치하세요.
 
-Mac용 DMG는 Apple 공증을 받지 않아 설치 스크립트나 앱에 보안 경고가 표시될 수 있습니다. DMG 대신 소스를 clone해 직접 확인하고 빌드하는 방법을 안내합니다. Git, Apple Command Line Tools, Python 3.12가 필요합니다. 아래 [소스에서 직접 설치하기](#소스에서-직접-설치하기)의 macOS 절차를 따르세요. 직접 빌드해도 Apple 공증을 받는 것은 아니므로 Gatekeeper 경고가 완전히 사라진다고 보장할 수 없습니다.
-
-macOS Intel용 설치 파일은 아직 없습니다. [모든 버전과 변경 내역](https://github.com/whitewise95/quickmd-desktop/releases)
-
-### 소스에서 직접 설치하기
-
-아래 절차는 설치 파일을 직접 만들거나 macOS에 설치하려는 경우에 사용합니다. GitHub에서 소스를 clone하는 것만으로는 설치되지 않습니다.
-
-#### 1. 소스 내려받기
-
-먼저 Git과 QuickMD 빌드 도구를 설치합니다.
-
-- **macOS:** 터미널에서 `xcode-select --install`을 실행해 Apple Command Line Tools를 설치하고 [Python 3.12](https://www.python.org/downloads/macos/)를 설치합니다. 이미 Homebrew가 있다면 `brew install python@3.12`를 사용할 수 있습니다.
-- **Windows:** [Git](https://git-scm.com/download/win), [Python 3.12](https://www.python.org/downloads/windows/)(설치 시 Python Launcher `py` 포함), [Inno Setup 6](https://jrsoftware.org/isdl.php)을 설치합니다. Python과 Git 설치 프로그램은 기본 설치 옵션을 사용하면 됩니다.
-
-그다음 원하는 위치에서 터미널(macOS) 또는 PowerShell(Windows)을 열어 저장소를 clone합니다. 예를 들어 홈 폴더의 Documents에 받으려면:
+먼저 터미널(macOS) 또는 PowerShell(Windows)에서 저장소를 내려받습니다.
 
 ```bash
 cd ~/Documents
@@ -49,13 +32,7 @@ git clone https://github.com/whitewise95/quickmd-desktop.git QuickMD
 cd QuickMD
 ```
 
-**중요:** 이후 명령은 모두 `QuickMD` 저장소 폴더 안에서 실행합니다. 다른 폴더에 있다면 먼저 `cd ~/Documents/QuickMD`를 실행하세요. `build/`와 `dist/`는 빌드할 때 생성되므로 clone 직후에는 아직 없습니다.
-
-#### 2. 의존성 설치 및 빌드
-
-현재 운영체제와 CPU에서 직접 빌드합니다. 전체 명령은 아래 개발·빌드 절에도 있습니다.
-
-macOS:
+**macOS** — Apple Command Line Tools가 없다면 `xcode-select --install`을 실행하세요. 저장소 폴더에서:
 
 ```bash
 python3.12 -m venv .venv
@@ -63,38 +40,20 @@ source .venv/bin/activate
 python -m pip install --require-hashes -r requirements-dev.lock
 python -m pip install --no-deps --no-build-isolation -e .
 python scripts/build.py
-```
-
-Windows PowerShell:
-
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
-.\.venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e .
-.\.venv\Scripts\python.exe scripts\build.py
-```
-
-빌드가 끝나면 `dist` 폴더가 생깁니다. Windows 빌드는 Windows에서, macOS 빌드는 Mac에서 해야 합니다.
-
-#### 3. 설치
-
-macOS에서는 저장소 폴더에서 다음을 실행합니다.
-
-```bash
 bash build/dmg/install.sh
 ```
 
-이 스크립트는 `build/dmg/QuickMD.app`을 사용자 계정에 설치합니다. 앱 위치는 `~/Library/Application Support/QuickMD/QuickMD.app`, CLI 명령 링크는 `~/.local/bin/quickmd`입니다. 새 터미널을 연 뒤 `quickmd doctor`로 확인하세요.
-
-Windows에서는 파일 탐색기로 `dist\QuickMD-Setup-Windows-x64.exe`를 찾아 더블 클릭하고 설치 안내를 따릅니다. 관리자 권한 없이 `%LOCALAPPDATA%\Programs\QuickMD`에 설치되며 우클릭 메뉴도 등록합니다. 설치 후 새 PowerShell 창에서 `quickmd doctor`를 실행하세요.
-
-**`Start-Process`에서 파일을 찾을 수 없다고 나오면:** 다운로드한 ZIP을 먼저 압축 해제하고, 그 폴더에서 `QuickMD-Setup-Windows-x64.exe`를 실행하세요. `dist\QuickMD-Setup-Windows-x64.exe` 경로는 저장소를 clone한 뒤 직접 빌드했을 때만 생깁니다. Git clone에는 `dist` 설치 파일이 들어 있지 않습니다. 직접 빌드한 경우 다음 명령으로 확인하세요.
+**Windows PowerShell** — 저장소 폴더에서:
 
 ```powershell
-Test-Path .\dist\QuickMD-Setup-Windows-x64.exe
+py -3.12 -m venv .venv
+.\\.venv\\Scripts\\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\\.venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e .
+.\\.venv\\Scripts\\python.exe scripts\\build.py
+.\\dist\\QuickMD-Setup-Windows-x64.exe
 ```
 
-`True`이면 설치 파일이 생성된 것입니다. `False`이면 위 Windows 빌드 절차가 완료되지 않았거나 실패한 것입니다. 빌드 단계에 표시된 오류를 먼저 해결하세요. 설치된 QuickMD와 Actions에서 받은 사전 빌드 설치 파일은 Python 없이 사용할 수 있습니다. **소스에서 직접 빌드할 때만** Python 3.12와 Inno Setup 6이 필요합니다.
+소스 빌드는 코드를 직접 확인하고 싶을 때 사용하세요. 서명·공증을 대신하지 않으므로 보안 경고가 사라진다고 보장할 수 없습니다. 경고를 우회하거나 보안 기능을 끄지 마세요.
 
 ### 공개 배포 상태와 보안 알림
 
