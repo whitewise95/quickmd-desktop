@@ -47,17 +47,17 @@ bash build/dmg/install.sh
 
 ```powershell
 py -3.12 -m venv .venv
-.\\.venv\\Scripts\\python.exe -m pip install --require-hashes -r requirements-dev.lock
-.\\.venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e .
-.\\.venv\\Scripts\\python.exe scripts\\build.py
-.\\dist\\QuickMD-Setup-Windows-x64.exe
+.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\.venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e .
+.\.venv\Scripts\python.exe scripts\build.py
+.\dist\QuickMD-Setup-Windows-x64.exe
 ```
 
 소스 빌드는 코드를 직접 확인하고 싶을 때 사용하세요. 서명·공증을 대신하지 않으므로 보안 경고가 사라진다고 보장할 수 없습니다. 경고를 우회하거나 보안 기능을 끄지 마세요.
 
 ### 공개 배포 상태와 보안 알림
 
-GitHub Releases에 정식 게시된 설치 파일, 공개 설치 스크립트, WinGet/Homebrew 설치 명령은 아직 없습니다. 이 개발 빌드는 공식 배포용 인증서로 서명·공증되지 않아 Windows SmartScreen 또는 macOS Gatekeeper 경고가 표시될 수 있습니다.
+Windows x64와 macOS Apple Silicon 설치 파일은 GitHub Releases에서 받을 수 있습니다. 패키지는 서명·공증되지 않아 SmartScreen 또는 Gatekeeper 경고가 표시될 수 있습니다.
 
 ## 우클릭 사용
 
