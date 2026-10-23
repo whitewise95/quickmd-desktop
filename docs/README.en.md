@@ -9,26 +9,13 @@ No account, API key, server, GUI or idle background process. Packaged installati
 
 ### Windows 10/11 (x64)
 
-[Download the Windows installer](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe), double-click it, and follow the installer. Python and Git are not required.
+[Download the installer](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe), double-click it, and follow the prompts. Python and Git are not required. If SmartScreen warns you, do not force it to run. To build it yourself, follow the Windows source steps below. Local builds may still be blocked by security settings.
 
-If SmartScreen blocks the installer, do not bypass the warning. To review and build the source yourself, follow [Build from source](#build-from-source) below. A locally built installer may avoid the downloaded-file warning, but Windows security features such as Smart App Control can still block unsigned software, so this is not guaranteed to remove warnings.
+### Build from source (macOS and Windows)
 
-### macOS (Apple Silicon)
+You need Git and Python 3.12. On Mac, also install Apple Command Line Tools; on Windows, install [Inno Setup 6](https://jrsoftware.org/isdl.php).
 
-The Mac DMG is not notarized by Apple, so macOS may show a security warning for the installer script or app. Instead of the DMG, the instructions below guide you through cloning, inspecting, and building the source. You need Git, Apple Command Line Tools, and Python 3.12. Follow the macOS steps under [Build from source](#build-from-source). A local build is still not notarized by Apple, so Gatekeeper warnings are not guaranteed to disappear.
-
-A macOS Intel package is not available yet. [All versions and release notes](https://github.com/whitewise95/quickmd-desktop/releases)
-
-### Build from source
-
-Use these steps to build an installer yourself or to install on macOS. Cloning the source alone does not install QuickMD: you must install the build tools, build on the target operating system, then run its installer. Open Terminal on macOS or PowerShell on Windows and follow the steps in order.
-
-### 1. Install the build tools and clone the repository
-
-- **macOS:** Install Apple Command Line Tools with `xcode-select --install`, then install [Python 3.12](https://www.python.org/downloads/macos/). If you already use Homebrew, you can run `brew install python@3.12`.
-- **Windows:** Install [Git](https://git-scm.com/download/win), [Python 3.12](https://www.python.org/downloads/windows/) (include the Python Launcher `py`), and [Inno Setup 6](https://jrsoftware.org/isdl.php).
-
-From the folder where you want the project, clone it and enter the repository directory:
+In Terminal (macOS) or PowerShell (Windows), clone the repository:
 
 ```bash
 cd ~/Documents
@@ -36,13 +23,7 @@ git clone https://github.com/whitewise95/quickmd-desktop.git QuickMD
 cd QuickMD
 ```
 
-Run all following commands from this `QuickMD` folder. The `build/` and `dist/` folders are generated during the build and do not exist immediately after cloning.
-
-### 2. Install dependencies and build
-
-Build natively on the operating system and CPU where you plan to install QuickMD.
-
-macOS:
+**macOS** — If needed, install Apple Command Line Tools with `xcode-select --install`. From the repository folder:
 
 ```bash
 python3.12 -m venv .venv
@@ -50,38 +31,20 @@ source .venv/bin/activate
 python -m pip install --require-hashes -r requirements-dev.lock
 python -m pip install --no-deps --no-build-isolation -e .
 python scripts/build.py
-```
-
-Windows PowerShell:
-
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install --require-hashes -r requirements-dev.lock
-.\.venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e .
-.\.venv\Scripts\python.exe scripts\build.py
-```
-
-### 3. Install QuickMD
-
-macOS, from the repository folder:
-
-```bash
 bash build/dmg/install.sh
 ```
 
-The app is installed under `~/Library/Application Support/QuickMD/QuickMD.app`; the CLI link is `~/.local/bin/quickmd`. Open a new terminal and run `quickmd doctor`.
-
-Windows: Open File Explorer, go to `QuickMD\dist`, double-click `QuickMD-Setup-Windows-x64.exe`, and follow the installer. It installs per-user under `%LOCALAPPDATA%\Programs\QuickMD` without administrator access. Open a new PowerShell window and run `quickmd doctor`.
-
-**If PowerShell says the file cannot be found:** if you downloaded the artifact, extract the ZIP first and run `QuickMD-Setup-Windows-x64.exe` from the extracted folder. The `dist\QuickMD-Setup-Windows-x64.exe` path exists only after building from a cloned repository. A Git clone does not include the `dist` installer. If you built from source, check:
+**Windows PowerShell** — From the repository folder:
 
 ```powershell
-Test-Path .\dist\QuickMD-Setup-Windows-x64.exe
+py -3.12 -m venv .venv
+.\\.venv\\Scripts\\python.exe -m pip install --require-hashes -r requirements-dev.lock
+.\\.venv\\Scripts\\python.exe -m pip install --no-deps --no-build-isolation -e .
+.\\.venv\\Scripts\\python.exe scripts\\build.py
+.\\dist\\QuickMD-Setup-Windows-x64.exe
 ```
 
-`True` means the installer exists. If it returns `False`, the Windows build steps above did not complete; resolve the error shown during the build first. Python is not needed to run QuickMD or install the prebuilt Actions package. **Only building from source requires Python 3.12 and Inno Setup 6.**
-
-No public GitHub Release, download helper, WinGet package or Homebrew tap is available yet. These development builds are not signed and notarized with official distribution certificates, so Windows SmartScreen or macOS Gatekeeper warnings may appear. See [validation](VALIDATION.md) for the tested platforms and limitations.
+Build from source if you want to inspect the code yourself. It does not replace signing or notarization, so security warnings are not guaranteed to disappear. Do not bypass warnings or disable security features.
 
 ## Use
 
