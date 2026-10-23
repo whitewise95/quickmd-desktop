@@ -7,19 +7,17 @@ No account, API key, server, GUI or idle background process. Packaged installati
 
 ## Install
 
-### Direct downloads (no Python required)
+### Windows 10/11 (x64)
 
-Download the latest public release for your operating system. Python and Git are not required to install or run the packaged app.
+[Download the Windows installer](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe), double-click it, and follow the installer. Python and Git are not required.
 
-- [Windows x64 installer](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe)
-- [macOS Apple Silicon disk image](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg) — open the DMG and follow the included installation instructions.
-- [All versions and release notes](https://github.com/whitewise95/quickmd-desktop/releases)
+If SmartScreen blocks the installer, do not bypass the warning. To review and build the source yourself, follow [Build from source](#build-from-source) below. A locally built installer may avoid the downloaded-file warning, but Windows security features such as Smart App Control can still block unsigned software, so this is not guaranteed to remove warnings.
 
-Version-pinned links are listed alongside the latest downloads. Add each new version below when it is published; latest links will automatically follow the newest public release.
+### macOS (Apple Silicon)
 
-- **v0.1.0:** [Windows x64](https://github.com/whitewise95/quickmd-desktop/releases/download/v0.1.0/QuickMD-Setup-Windows-x64.exe) · [macOS Apple Silicon](https://github.com/whitewise95/quickmd-desktop/releases/download/v0.1.0/QuickMD-macOS-arm64.dmg) · [release notes](https://github.com/whitewise95/quickmd-desktop/releases/tag/v0.1.0)
+The Mac DMG is not notarized by Apple, so macOS may show a security warning for the installer script or app. Instead of the DMG, the instructions below guide you through cloning, inspecting, and building the source. You need Git, Apple Command Line Tools, and Python 3.12. Follow the macOS steps under [Build from source](#build-from-source). A local build is still not notarized by Apple, so Gatekeeper warnings are not guaranteed to disappear.
 
-A macOS Intel package is not available yet.
+A macOS Intel package is not available yet. [All versions and release notes](https://github.com/whitewise95/quickmd-desktop/releases)
 
 ### Build from source
 
