@@ -18,20 +18,15 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 지원 목표: Windows 10/11 x64, macOS 13+ Intel/Apple Silicon.
 
-### 바로 다운로드 (Python 불필요)
+### Windows 10/11 (x64)
 
-최신 버전을 받으세요. Python이나 Git은 필요하지 않습니다.
+[Windows 설치 파일 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe) 후 더블클릭하고 설치 안내를 따릅니다. Python이나 Git은 필요하지 않습니다.
 
-**Windows 10/11 (x64)**
+SmartScreen에서 실행을 막으면 경고를 우회하지 마세요. 직접 소스를 검토하고 빌드하려면 아래의 [소스에서 직접 설치하기](#소스에서-직접-설치하기)를 참고하세요. 직접 빌드하면 다운로드 파일 경고를 피할 수 있는 경우가 있지만, Smart App Control 등 Windows 보안 기능이 서명되지 않은 프로그램을 차단할 수 있어 경고가 사라진다고 보장할 수 없습니다.
 
-1. [설치 파일 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe)
-2. 다운로드한 파일을 더블클릭하고 설치 안내를 따릅니다.
+### macOS (Apple Silicon)
 
-**macOS (Apple Silicon)**
-
-1. [DMG 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg) 후 더블클릭합니다.
-2. 터미널에 `bash `를 입력하고, 열린 QuickMD 디스크 창의 `install.sh`를 터미널로 끌어다 놓은 뒤 Enter를 누릅니다.
-3. 새 터미널 창에서 `quickmd doctor`를 실행해 설치를 확인합니다.
+Mac용 DMG는 Apple 공증을 받지 않아 설치 스크립트나 앱에 보안 경고가 표시될 수 있습니다. DMG 대신 소스를 clone해 직접 확인하고 빌드하는 방법을 안내합니다. Git, Apple Command Line Tools, Python 3.12가 필요합니다. 아래 [소스에서 직접 설치하기](#소스에서-직접-설치하기)의 macOS 절차를 따르세요. 직접 빌드해도 Apple 공증을 받는 것은 아니므로 Gatekeeper 경고가 완전히 사라진다고 보장할 수 없습니다.
 
 macOS Intel용 설치 파일은 아직 없습니다. [모든 버전과 변경 내역](https://github.com/whitewise95/quickmd-desktop/releases)
 
