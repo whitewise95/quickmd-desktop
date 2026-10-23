@@ -22,9 +22,11 @@ Windows Explorer와 macOS Finder에 통합되며 설치된 버전은 Python·로
 
 최신 공개 Release에서 운영체제에 맞는 파일을 받으세요. 설치 파일을 실행하는 데 Python이나 Git은 필요하지 않습니다.
 
-- [Windows x64 설치 프로그램 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe)
-- [macOS Apple Silicon 설치 이미지 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg) — DMG를 열고 안에 있는 설치 안내를 따릅니다.
+- [Windows x64 설치 프로그램 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-Setup-Windows-x64.exe) — 다운로드한 `.exe`를 더블클릭하고 설치 안내를 따릅니다.
+- [macOS Apple Silicon 설치 이미지 다운로드](https://github.com/whitewise95/quickmd-desktop/releases/latest/download/QuickMD-macOS-arm64.dmg)
 - [모든 버전과 변경 내역 보기](https://github.com/whitewise95/quickmd-desktop/releases)
+
+macOS에서는 DMG를 더블클릭해 연 다음, 터미널에서 설치 스크립트를 실행해야 합니다. 터미널에 `bash `를 입력하고, 열린 **QuickMD** 디스크 창의 `install.sh`를 터미널로 끌어다 놓은 뒤 Enter를 누르세요. 설치가 끝나면 새 터미널 창에서 `quickmd doctor`를 실행해 확인합니다. DMG를 여는 것만으로는 설치가 완료되지 않습니다.
 
 버전 고정 링크도 함께 제공합니다. 새 버전이 나오면 최신 링크는 자동으로 바뀌고, 아래에 이전 버전 링크를 추가합니다.
 
